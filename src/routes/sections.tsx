@@ -41,6 +41,15 @@ const renderFallback = () => (
 
 export const routesSection: RouteObject[] = [
   {
+    path: '/',
+    element: (
+      <AuthLayout>
+        <SignInPage />
+      </AuthLayout>
+    ),
+  },
+  {
+    path: 'dashboard',
     element: (
       <DashboardLayout>
         <Suspense fallback={renderFallback()}>
