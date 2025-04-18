@@ -1,8 +1,9 @@
 import type { RouteObject } from 'react-router';
 
 import { lazy, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
 import { varAlpha } from 'minimal-shared/utils';
+import { Outlet, Navigate } from 'react-router-dom';
+// import { varAlpha } from 'minimal-shared/utils';
 
 import Box from '@mui/material/Box';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
@@ -31,7 +32,7 @@ const renderFallback = () => (
     <LinearProgress
       sx={{
         width: 1,
-        maxWidth: 320,
+        maxWidth: 420,
         bgcolor: (theme) => varAlpha(theme.vars.palette.text.primaryChannel, 0.16),
         [`& .${linearProgressClasses.bar}`]: { bgcolor: 'text.primary' },
       }}
@@ -41,6 +42,11 @@ const renderFallback = () => (
 
 export const routesSection: RouteObject[] = [
   {
+    path:'/',
+    element:<Navigate to="sign-in" replace/>,
+  },
+  {
+    path:'dashboard',
     element: (
       <DashboardLayout>
         <Suspense fallback={renderFallback()}>

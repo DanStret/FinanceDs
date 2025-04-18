@@ -13,16 +13,54 @@ import { useRouter } from 'src/routes/hooks';
 
 import { Iconify } from 'src/components/iconify';
 
+
 // ----------------------------------------------------------------------
 
 export function SignInView() {
   const router = useRouter();
-
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
+  const validarForm = () =>{
+    const error:typeof errors = {}
+
+    if(!email){
+      error.email = 'El email es obligatorio';
+    }else if(!/^\S+@\S+\.\S+$/.test(email)){
+      error.email = 'Ingrese un email valido';
+    }
+
+    if(!password){
+      error.password = 'La contraseña es obligatoria'
+    }else if(password.length < 6){
+      error.password = 'Minimo 6 caracteres';
+    }
+
+    setErrors(error);
+    
+    return Object.keys(error).length === 0;
+
+  }
+  ///------------------------------------------------------------------
+  const validEmail = 'admin@gmail.com';
+  const validPassword = 'admin1234';
+  
   const handleSignIn = useCallback(() => {
-    router.push('/');
-  }, [router]);
+    
+    const esValido = validarForm();
+    console.log('¿Formulario válido?', esValido);
+    if (!esValido) return;
+    if(email === validEmail && password === validPassword )
+    {
+      router.push('/dashboard');
+      console.log('Formulario válido, enviar login...');
+    }else{
+      setErrors({...errors,email: ' credenciales incorrectas',password:' '})
+    }
+
+  }, [router, validarForm!]);
 
   const renderForm = (
     <Box
@@ -33,26 +71,34 @@ export function SignInView() {
       }}
     >
       <TextField
-        fullWidth
-        name="email"
-        label="Email address"
-        defaultValue="hello@gmail.com"
-        sx={{ mb: 3 }}
-        slotProps={{
-          inputLabel: { shrink: true },
-        }}
+      fullWidth
+      name="email"
+      label="Email"
+      placeholder="example@gmail.com"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      error={Boolean(errors.email)}
+      helperText={errors.email}
+      sx={{ mb: 3 }}
+      slotProps={{
+        inputLabel: { shrink: true },
+      }}
       />
 
       <Link variant="body2" color="inherit" sx={{ mb: 1.5 }}>
-        Forgot password?
+        Has olvidado tu contraseña?
       </Link>
 
       <TextField
         fullWidth
         name="password"
         label="Password"
-        defaultValue="@demo1234"
+        placeholder="password"
         type={showPassword ? 'text' : 'password'}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        error={Boolean(errors.password)}
+        helperText={errors.password}
         slotProps={{
           inputLabel: { shrink: true },
           input: {
@@ -83,6 +129,7 @@ export function SignInView() {
 
   return (
     <>
+    
       <Box
         sx={{
           gap: 1.5,
@@ -99,9 +146,9 @@ export function SignInView() {
             color: 'text.secondary',
           }}
         >
-          Don’t have an account?
+          ¿No tienes una cuenta? 
           <Link variant="subtitle2" sx={{ ml: 0.5 }}>
-            Get started
+            Empieza ahora
           </Link>
         </Typography>
       </Box>
