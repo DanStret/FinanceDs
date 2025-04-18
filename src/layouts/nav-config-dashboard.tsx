@@ -24,7 +24,7 @@ export const navData = [
     icon: icon('ic-user'),
   },
   {
-    title: 'Product',
+    title: 'Gastos',
     path: '/dashboard/products',
     icon: icon('ic-cart'),
     info: (
@@ -34,7 +34,7 @@ export const navData = [
     ),
   },
   {
-    title: 'Blog',
+    title: 'Resumen',
     path: '/dashboard/blog',
     icon: icon('ic-blog'),
   },
