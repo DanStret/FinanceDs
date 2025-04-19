@@ -8,7 +8,7 @@ export default function Page() {
   return (
     <>
       <title>{`Sign in - ${CONFIG.appName}`}</title>
-
+      
       <SignInView />
     </>
   );
